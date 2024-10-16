@@ -1,0 +1,5 @@
+docker-stats-collector
+docker-stats-collector-local
+database.db
+.vscode
+.idea

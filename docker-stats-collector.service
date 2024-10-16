@@ -1,0 +1,17 @@
+[Unit]
+Description=Docker Stats Collector
+After=docker.service
+Requires=docker.service
+
+[Service]
+ExecStart=/usr/local/bin/docker-stats-collector -interval 30 -db /var/lib/docker-stats/stats.db
+Restart=always
+RestartSec=10
+User=root
+Group=root
+
+ExecStartPre=/bin/mkdir -p /var/lib/docker-stats
+ExecStartPre=/bin/chown root:root /var/lib/docker-stats
+
+[Install]
+WantedBy=multi-user.target
