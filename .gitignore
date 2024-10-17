@@ -1,5 +1,6 @@
 docker-stats-collector
 docker-stats-collector-local
+stats.db
 database.db
 .vscode
 .idea
