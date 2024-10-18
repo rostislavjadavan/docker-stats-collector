@@ -12,18 +12,6 @@ type EchoLogger struct {
 	ZeroLog zerolog.Logger
 }
 
-func (l *EchoLogger) Panic(i ...interface{}) {
-	l.ZeroLog.Panic().Msg(fmt.Sprint(i...))
-}
-
-func (l *EchoLogger) Panicj(j log.JSON) {
-	l.ZeroLog.Panic().Fields(j).Msg("")
-}
-
-func (l *EchoLogger) Panicf(format string, args ...interface{}) {
-	l.ZeroLog.Panic().Msgf(format, args...)
-}
-
 func (l *EchoLogger) Output() io.Writer {
 	return l.ZeroLog
 }
@@ -116,4 +104,16 @@ func (l *EchoLogger) Fatalj(j log.JSON) {
 
 func (l *EchoLogger) Fatalf(format string, args ...interface{}) {
 	l.ZeroLog.Fatal().Msgf(format, args...)
+}
+
+func (l *EchoLogger) Panic(i ...interface{}) {
+	l.ZeroLog.Panic().Msg(fmt.Sprint(i...))
+}
+
+func (l *EchoLogger) Panicj(j log.JSON) {
+	l.ZeroLog.Panic().Fields(j).Msg("")
+}
+
+func (l *EchoLogger) Panicf(format string, args ...interface{}) {
+	l.ZeroLog.Panic().Msgf(format, args...)
 }
