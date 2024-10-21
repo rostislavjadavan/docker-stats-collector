@@ -5,6 +5,7 @@ import (
 	"dsc/database"
 	"dsc/lib"
 	"fmt"
+	"github.com/a-h/templ"
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
 	"time"
@@ -39,8 +40,14 @@ func CreateAndListen(appConfig config.AppConfig, db *database.Database) {
 	e.HideBanner = true
 	e.Logger = &lib.EchoLogger{ZeroLog: log.Logger}
 	e.Use(LogMiddleware())
-
+	e.Static("/public", "public")
 	e.GET("/", CreateHomepageHandler(db))
 
 	e.Logger.Fatal(e.Start(fmt.Sprintf("%s:%s", appConfig.WebServerAddress, appConfig.WebserverPort)))
+}
+
+func RenderView(c echo.Context, cmp templ.Component) error {
+	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
+
+	return cmp.Render(c.Request().Context(), c.Response().Writer)
 }

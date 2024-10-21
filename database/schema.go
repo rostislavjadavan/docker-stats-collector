@@ -7,6 +7,7 @@ func createSchema(db *sql.DB) error {
 		id TEXT,
 		name TEXT,
 		image TEXT,
+		tag TEXT,
 		timestamp DATETIME,
 		cpu_percent REAL,
 		memory_usage INTEGER,

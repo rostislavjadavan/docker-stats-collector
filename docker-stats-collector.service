@@ -4,7 +4,11 @@ After=docker.service
 Requires=docker.service
 
 [Service]
-ExecStart=/usr/local/bin/docker-stats-collector -interval 30 -db /var/lib/docker-stats/stats.db
+Environment="LOG_LEVEL=info"
+Environment="DB_PATH=/var/lib/docker-stats/stats.db"
+Environment="WEBSERVER_ADDRESS=0.0.0.0"
+Environment="WEBSERVER_PORT=8080"
+ExecStart=/usr/local/bin/docker-stats-collector -db /var/lib/docker-stats/stats.db
 Restart=always
 RestartSec=10
 User=root

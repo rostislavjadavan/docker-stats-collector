@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+body {
+    background-color: #e1e1e1;
+    padding: 1rem;
+    font-family: "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+#main {
+    width: 830px;
+}
+
+table {
+    border: 1px solid #666;
+    border-collapse: collapse;
+}
+
+td {
+    padding: 6px 12px;
+    border: 1px solid #666;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    text-transform: uppercase;
+}

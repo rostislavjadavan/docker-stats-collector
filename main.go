@@ -21,7 +21,6 @@ func main() {
 
 	log.Info().
 		Str("log_level", appConfig.LogLevel).
-		Int("interval", appConfig.Interval).
 		Msg("Starting Docker stats collection")
 
 	db, err := database.CreateDatabaseAndInitSchemaIfNotExists(appConfig.DbPath)

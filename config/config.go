@@ -9,7 +9,6 @@ import (
 type AppConfig struct {
 	LogLevel            string
 	DbPath              string
-	Interval            int
 	WebServerAddress    string
 	WebserverPort       string
 	AdminPassword       string
@@ -20,7 +19,6 @@ func LoadFromEnv() AppConfig {
 	return AppConfig{
 		LogLevel:            GetEnv("LOG_LEVEL", "debug"),
 		DbPath:              GetEnv("DB_PATH", "./stats.db"),
-		Interval:            GetEnvAsInt("INTERVAL", 5),
 		WebServerAddress:    GetEnv("WEBSERVER_ADDRESS", "127.0.0.1"),
 		WebserverPort:       GetEnv("WEBSERVER_PORT", "8080"),
 		AdminPassword:       GetEnv("ADMIN_PASSWORD", "admin"),

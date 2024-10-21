@@ -1,0 +1,20 @@
+package ui
+
+templ Layout(title string, components []templ.Component) {
+	<html lang="en">
+		<head>
+			<meta charset="utf-8"/>
+			<title>{ title }</title>
+			<link rel="stylesheet" href="/public/style.css">
+			<script type="text/javascript" src="/public/echarts.min.js"></script>
+		</head>
+		<body>
+			<div id="main">
+				<h1>Docker Stats</h1>
+				for _, component := range components {
+				    @component
+				}
+			</div>
+		</body>
+	</html>
+}

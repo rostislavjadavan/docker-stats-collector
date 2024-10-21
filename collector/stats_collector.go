@@ -13,6 +13,8 @@ import (
 	"time"
 )
 
+var Resolution = time.Minute
+
 type StatsCollector struct {
 	cli             *client.Client
 	insertStatement *sql.Stmt
@@ -28,8 +30,8 @@ func NewStatsCollector(config config.AppConfig, db *database.Database) (*StatsCo
 		Msg("Docker client created")
 
 	stmt, err := db.Conn.Prepare(`INSERT INTO container_stats
-		(id, name, image, timestamp, cpu_percent, memory_usage, memory_limit, network_rx, network_tx)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+		(id, name, image, tag, timestamp, cpu_percent, memory_usage, memory_limit, network_rx, network_tx)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
 	if err != nil {
 		return nil, err
 	}
@@ -73,15 +75,19 @@ func (s *StatsCollector) CollectAndStoreStats() error {
 
 		cpuDelta := float64(statsJSON.CPUStats.CPUUsage.TotalUsage - statsJSON.PreCPUStats.CPUUsage.TotalUsage)
 		systemDelta := float64(statsJSON.CPUStats.SystemUsage - statsJSON.PreCPUStats.SystemUsage)
+		numCPUs := float64(len(statsJSON.CPUStats.CPUUsage.PercpuUsage))
 		cpuPercent := 0.0
 		if systemDelta > 0 && cpuDelta > 0 {
-			cpuPercent = (cpuDelta / systemDelta) * float64(len(statsJSON.CPUStats.CPUUsage.PercpuUsage)) * 100.0
+			cpuPercent = (cpuDelta / systemDelta) * numCPUs * 100.0
 		}
+
+		imageInfo := parseDockerImage(containerInfo.Image)
 
 		_, err = s.insertStatement.Exec(
 			containerInfo.ID[:12],
 			namesToString(containerInfo.Names),
-			containerInfo.Image,
+			imageInfo.BaseImage,
+			imageInfo.Tag,
 			time.Now().Format(time.RFC3339),
 			cpuPercent,
 			statsJSON.MemoryStats.Usage,

@@ -1,0 +1,42 @@
+package ui
+
+import (
+    "time"
+    "dsc/database"
+    "github.com/dustin/go-humanize"
+)
+
+templ ContainerBox(title string, content templ.Component) {
+	<div>
+        <h2>{ title }</h2>
+        @content
+	</div>
+}
+
+templ DailyTopStats(memoryStats []database.MemoryTopStat, cpuStats []database.CpuTopStat) {
+    <h3>Top memory usage</h3>
+    <table>
+        for _, stat := range memoryStats {
+        <tr>
+            <td><strong>{ humanize.Bytes(stat.MemoryUsage) } / { humanize.Bytes(stat.MemoryLimit) }</strong></td>
+            <td>{ stat.Date.Format(time.RFC1123) }</td>
+            <td>{ stat.ContainerName }</td>
+            <td>{ stat.ContainerID }</td>
+            <td>{ humanize.Ftoa(stat.CpuPercent) }%</td>
+        </tr>
+        }
+    </table>
+    <h3>Top cpu usage</h3>
+        <table>
+            for _, stat := range cpuStats {
+            <tr>
+                <td><strong>{ humanize.Ftoa(stat.CpuPercent) }%</strong></td>
+                <td>{ stat.Date.Format(time.RFC1123) }</td>
+                <td>{ stat.ContainerName }</td>
+                <td>{ stat.ContainerID }</td>
+                <td>{ humanize.Bytes(stat.MemoryUsage) } / { humanize.Bytes(stat.MemoryLimit) }</td>
+            </tr>
+            }
+        </table>
+}
+

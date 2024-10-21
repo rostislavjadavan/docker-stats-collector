@@ -13,7 +13,7 @@ func CreateAndScheduleCollector(appConfig config.AppConfig, scheduler *gocron.Sc
 		return err
 	}
 
-	_, err = scheduler.Every(appConfig.Interval).Seconds().Do(func() {
+	_, err = scheduler.Every(Resolution).Do(func() {
 		err := statsCollector.CollectAndStoreStats()
 		if err != nil {
 			log.Error().Err(err).Msg("Error collecting stats")
@@ -24,7 +24,7 @@ func CreateAndScheduleCollector(appConfig config.AppConfig, scheduler *gocron.Sc
 	}
 
 	log.Info().
-		Int("interval", appConfig.Interval).
+		Str("interval", Resolution.String()).
 		Msg("Stats collector created and started")
 	return nil
 }

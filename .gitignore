@@ -1,6 +1,9 @@
+*_templ.go
+*_templ.txt
 docker-stats-collector
 docker-stats-collector-local
 stats.db
+stats.db.*
 database.db
 .vscode
 .idea

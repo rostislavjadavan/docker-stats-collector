@@ -34,6 +34,9 @@ run:
 	./$(BINARY_NAME)
 
 run-dev:
-	go run main.go -interval 5 -db ./database.db
+	go run main.go -db ./stats.db
 
-.PHONY: all build clean build-local check-binary deps run run-dev
+test:
+	go test ./...
+
+.PHONY: all build clean build-local check-binary deps run run-dev test
