@@ -1,6 +1,7 @@
 package webserver
 
 import (
+	"bytes"
 	"dsc/config"
 	"dsc/database"
 	"dsc/lib"
@@ -48,7 +49,10 @@ func CreateAndListen(appConfig config.AppConfig, db *database.Database, staticFi
 }
 
 func RenderView(c echo.Context, cmp templ.Component) error {
-	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
-
-	return cmp.Render(c.Request().Context(), c.Response().Writer)
+	buf := new(bytes.Buffer)
+	err := cmp.Render(c.Request().Context(), buf)
+	if err != nil {
+		return err
+	}
+	return c.HTML(200, buf.String())
 }

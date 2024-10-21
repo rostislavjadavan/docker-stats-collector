@@ -5,12 +5,14 @@ import (
 	"dsc/ui"
 	"github.com/a-h/templ"
 	"github.com/labstack/echo/v4"
+	"github.com/rs/zerolog/log"
 )
 
 func CreateHomepageHandler(db *database.Database) func(c echo.Context) error {
 	return func(c echo.Context) error {
 		images, err := db.GetImages()
 		if err != nil {
+			log.Error().Err(err)
 			return err
 		}
 
@@ -18,10 +20,12 @@ func CreateHomepageHandler(db *database.Database) func(c echo.Context) error {
 		for _, image := range images {
 			memoryStats, err := db.GetTopMemoryStats(image)
 			if err != nil {
+				log.Error().Err(err)
 				return err
 			}
 			cpuStats, err := db.GetTopCpuStats(image)
 			if err != nil {
+				log.Error().Err(err)
 				return err
 			}
 			stats := ui.DailyTopStats(memoryStats, cpuStats)
