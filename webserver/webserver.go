@@ -8,6 +8,7 @@ import (
 	"github.com/a-h/templ"
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
+	"io/fs"
 	"time"
 )
 
@@ -35,12 +36,12 @@ func LogMiddleware() echo.MiddlewareFunc {
 	}
 }
 
-func CreateAndListen(appConfig config.AppConfig, db *database.Database) {
+func CreateAndListen(appConfig config.AppConfig, db *database.Database, staticFiles fs.FS) {
 	e := echo.New()
 	e.HideBanner = true
 	e.Logger = &lib.EchoLogger{ZeroLog: log.Logger}
 	e.Use(LogMiddleware())
-	e.Static("/public", "public")
+	e.StaticFS("/public", echo.MustSubFS(staticFiles, ""))
 	e.GET("/", CreateHomepageHandler(db))
 
 	e.Logger.Fatal(e.Start(fmt.Sprintf("%s:%s", appConfig.WebServerAddress, appConfig.WebserverPort)))

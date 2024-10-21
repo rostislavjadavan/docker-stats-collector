@@ -6,14 +6,19 @@ import (
 	"dsc/database"
 	"dsc/lib"
 	"dsc/webserver"
+	"embed"
 	"github.com/go-co-op/gocron"
 	"github.com/rs/zerolog/log"
+	"io/fs"
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
 var appConfig config.AppConfig
+
+//go:embed public
+var embeddedFiles embed.FS
 
 func main() {
 	appConfig = config.LoadFromEnv()
@@ -38,7 +43,11 @@ func main() {
 	}
 
 	go func() {
-		webserver.CreateAndListen(appConfig, db)
+		publicFS, err := fs.Sub(embeddedFiles, "public")
+		if err != nil {
+			log.Fatal().Err(err)
+		}
+		webserver.CreateAndListen(appConfig, db, publicFS)
 	}()
 
 	scheduler.StartBlocking()
