@@ -7,7 +7,7 @@ import (
 )
 
 templ ContainerBox(title string, content templ.Component) {
-	<div>
+	<div class="mb-4">
         <h2>{ title }</h2>
         @content
 	</div>
@@ -20,8 +20,7 @@ templ DailyTopStats(memoryStats []database.MemoryTopStat, cpuStats []database.Cp
         <tr>
             <td><strong>{ humanize.Bytes(stat.MemoryUsage) } / { humanize.Bytes(stat.MemoryLimit) }</strong></td>
             <td>{ stat.Date.Format(time.RFC1123) }</td>
-            <td>{ stat.ContainerName }</td>
-            <td>{ stat.ContainerID }</td>
+            <td>{ stat.ContainerName } <small>[{ stat.ContainerID }]</small></td>
             <td>{ humanize.Ftoa(stat.CpuPercent) }%</td>
         </tr>
         }
@@ -32,8 +31,7 @@ templ DailyTopStats(memoryStats []database.MemoryTopStat, cpuStats []database.Cp
             <tr>
                 <td><strong>{ humanize.Ftoa(stat.CpuPercent) }%</strong></td>
                 <td>{ stat.Date.Format(time.RFC1123) }</td>
-                <td>{ stat.ContainerName }</td>
-                <td>{ stat.ContainerID }</td>
+                <td>{ stat.ContainerName } <small>[{ stat.ContainerID }]</small></td>
                 <td>{ humanize.Bytes(stat.MemoryUsage) } / { humanize.Bytes(stat.MemoryLimit) }</td>
             </tr>
             }

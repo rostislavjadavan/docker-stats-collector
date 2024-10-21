@@ -10,7 +10,7 @@ templ Layout(title string, components []templ.Component) {
 		</head>
 		<body>
 			<div id="main">
-				<h1>Docker Stats</h1>
+				<h1 class="mb-4">{ title }</h1>
 				for _, component := range components {
 				    @component
 				}
