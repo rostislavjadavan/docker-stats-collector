@@ -26,5 +26,19 @@ func CreateAndScheduleCollector(appConfig config.AppConfig, scheduler *gocron.Sc
 	log.Info().
 		Str("interval", Resolution.String()).
 		Msg("Stats collector created and started")
+
+	_, err = scheduler.Every(CleanUpResolution).Do(func() {
+		rowsAffected, err := db.CleanupOldData()
+		if err != nil {
+			log.Error().Err(err).Msg("Error cleanup old stats")
+		}
+		log.Info().
+			Int64("rows_affected", rowsAffected).
+			Msg("Cleaning up old data finished")
+	})
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

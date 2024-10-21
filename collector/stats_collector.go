@@ -14,6 +14,7 @@ import (
 )
 
 var Resolution = time.Minute
+var CleanUpResolution = 24 * time.Hour
 
 type StatsCollector struct {
 	cli             *client.Client

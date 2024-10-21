@@ -30,6 +30,6 @@ func CreateDatabaseAndInitSchemaIfNotExists(dbPath string) (*Database, error) {
 	}, nil
 }
 
-func (db *Database) Close() {
-	_ = db.Conn.Close()
+func (d *Database) Close() {
+	_ = d.Conn.Close()
 }
